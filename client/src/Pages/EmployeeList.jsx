@@ -14,11 +14,13 @@ const deleteEmployee = (id) => {
 
 const EmployeeList = () => {
   const [loading, setLoading] = useState(true);
-  const [employees, setEmployees] = useState(null);
-  const [filteredEmployees, setFilteredEmployees] = useState(null);
+  const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [sortField, setSortField] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleDelete = (id) => {
     deleteEmployee(id);
@@ -33,12 +35,11 @@ const EmployeeList = () => {
   };
 
   useEffect(() => {
-    fetchEmployees()
-      .then((employees) => {
-        setLoading(false);
-        setEmployees(employees);
-        setFilteredEmployees(employees);
-      });
+    fetchEmployees().then((employees) => {
+      setLoading(false);
+      setEmployees(employees);
+      setFilteredEmployees(employees);
+    });
   }, []);
 
   useEffect(() => {
@@ -47,7 +48,9 @@ const EmployeeList = () => {
 
       if (searchQuery) {
         filtered = filtered.filter((employee) =>
-          employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+          getFullName(employee)
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
         );
       }
 
@@ -81,12 +84,93 @@ const EmployeeList = () => {
     setSelectedLevel(e.target.value);
   };
 
+  const handleSort = (field) => {
+    if (field === sortField) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortEmployees = () => {
+    let sorted = [...filteredEmployees];
+
+    if (
+      sortField === "firstName" ||
+      sortField === "lastName" ||
+      sortField === "middleName"
+    ) {
+      sorted.sort((a, b) => {
+        const nameA = getFullName(a)[sortField].toLowerCase();
+        const nameB = getFullName(b)[sortField].toLowerCase();
+
+        if (nameA < nameB) {
+          return sortOrder === "asc" ? -1 : 1;
+        }
+
+        if (nameA > nameB) {
+          return sortOrder === "asc" ? 1 : -1;
+        }
+
+        return 0;
+      });
+    } else if (sortField === "position" || sortField === "level") {
+      sorted.sort((a, b) => {
+        const fieldA = a[sortField].toLowerCase();
+        const fieldB = b[sortField].toLowerCase();
+
+        if (fieldA < fieldB) {
+          return sortOrder === "asc" ? -1 : 1;
+        }
+
+        if (fieldA > fieldB) {
+          return sortOrder === "asc" ? 1 : -1;
+        }
+
+        return 0;
+      });
+    }
+
+    setFilteredEmployees(sorted);
+  };
+
+  const getFullName = (employee) => {
+    const nameParts = employee.name.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts[nameParts.length - 1];
+    const middleName = nameParts.slice(1, nameParts.length - 1).join(" ");
+
+    return {
+      firstName,
+      middleName,
+      lastName,
+    };
+  };
+
+  useEffect(() => {
+    sortEmployees();
+  }, [sortField, sortOrder]);
+
   if (loading) {
     return <Loading />;
   }
 
   return (
     <div>
+      <div>
+        <button onClick={() => handleSort("firstName")}>
+          Sort by First Name
+        </button>
+        <button onClick={() => handleSort("lastName")}>
+          Sort by Last Name
+        </button>
+        <button onClick={() => handleSort("middleName")}>
+          Sort by Middle Name
+        </button>
+        <button onClick={() => handleSort("position")}>Sort by Position</button>
+        <button onClick={() => handleSort("level")}>Sort by Level</button>
+      </div>
       <div className="filter-container">
         <input
           type="text"
@@ -94,6 +178,7 @@ const EmployeeList = () => {
           value={searchQuery}
           onChange={handleSearch}
         />
+
         <select value={selectedPosition} onChange={handleFilterPosition}>
           <option value="">All Positions</option>
           <option value="Main Actor">Main Actor</option>
@@ -112,10 +197,16 @@ const EmployeeList = () => {
           <option value="Medior">Medior</option>
           <option value="Senior">Senior</option>
           <option value="Expert">Expert</option>
-          <option value="Godlike">Godlike</option>      
+          <option value="Godlike">Godlike</option>
         </select>
       </div>
-      <EmployeeTable employees={filteredEmployees} onDelete={handleDelete} />
+      <EmployeeTable
+        employees={filteredEmployees}
+        onDelete={handleDelete}
+        onSort={handleSort}
+        sortField={sortField}
+        sortOrder={sortOrder}
+      />
     </div>
   );
 };

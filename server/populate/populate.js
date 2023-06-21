@@ -21,6 +21,7 @@ const populateEmployees = async () => {
   await EmployeeModel.deleteMany({});
 
   const employees = names.map((name) => ({
+
     name,
     level: pick(levels),
     position: pick(positions),
