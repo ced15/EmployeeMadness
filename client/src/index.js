@@ -50,6 +50,10 @@ const router = createBrowserRouter([
         path: "/form-test",
         element: <FormTest />,
       },
+      {
+        path: "/employees/:search",
+        element: <EmployeeList />,
+      },
     ],
   },
 ]);

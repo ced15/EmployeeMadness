@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Loading from "../Components/Loading";
 import EmployeeTable from "../Components/EmployeeTable";
 
@@ -13,6 +14,8 @@ const deleteEmployee = (id) => {
 };
 
 const EmployeeList = () => {
+  const { search } = useParams();
+  console.log(search)
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
@@ -201,6 +204,7 @@ const EmployeeList = () => {
         </select>
       </div>
       <EmployeeTable
+        search= {search ? search : ""}
         employees={filteredEmployees}
         onDelete={handleDelete}
         onSort={handleSort}

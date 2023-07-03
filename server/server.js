@@ -75,6 +75,22 @@ app.patch("/api/employees/:id", async (req, res, next) => {
   }
 });
 
+//////
+// app.get("/employees/:search", (req, res) => {
+//   const searchQuery = req.params.search;
+//   console.log("ceva")
+//   console.log(searchQuery);
+
+//   EmployeeModel.find({ name: searchQuery })
+//     .then((employees) => {
+//       res.json(employees);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//       res.status(500).json({ error: "Internal Server Error" });
+//     });
+// });
+
 ////
 app.patch("/api/equipment/:id", async (req, res, next) => {
   try {
