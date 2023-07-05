@@ -4,6 +4,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
   const [name, setName] = useState(employee?.name ?? "");
   const [level, setLevel] = useState(employee?.level ?? "");
   const [position, setPosition] = useState(employee?.position ?? "");
+  const [present, setPresent] = useState(employee?.present ?? false); 
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -14,6 +15,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
         name,
         level,
         position,
+        present,
       });
     }
 
@@ -21,6 +23,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
       name,
       level,
       position,
+      present,
     });
   };
 
@@ -53,6 +56,17 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           onChange={(e) => setPosition(e.target.value)}
           name="position"
           id="position"
+        />
+      </div>
+
+      <div className="control">
+        <label htmlFor="present">Present:</label>
+        <input
+          type="checkbox"
+          checked={present}
+          onChange={(e) => setPresent(e.target.checked)}
+          name="present"
+          id="present"
         />
       </div>
 

@@ -8,9 +8,10 @@ import ErrorPage from "./Pages/ErrorPage";
 import EmployeeList from "./Pages/EmployeeList";
 import EmployeeCreator from "./Pages/EmployeeCreator";
 import EmployeeUpdater from "./Pages/EmployeeUpdater";
-// import EquipmentForm from "./Components/EquipmentForm";
+import EquipmentForm from "./Components/EquipmentForm";
 import EquipmentList from "./Pages/EquipmentList";
 import EquipmentCreator from "./Pages/EquipmentCreator";
+import Missing from "./Pages/Missing";
 
 import "./index.css";
 import TableTest from "./Pages/TableTest";
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/employees/:search",
         element: <EmployeeList />,
+      },
+      {
+        path: "/missing",
+        element: <Missing />,
       },
     ],
   },

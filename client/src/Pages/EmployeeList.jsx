@@ -15,7 +15,6 @@ const deleteEmployee = (id) => {
 
 const EmployeeList = () => {
   const { search } = useParams();
-  console.log(search)
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
