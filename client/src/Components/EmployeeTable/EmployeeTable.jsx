@@ -1,24 +1,13 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./EmployeeTable.css";
 
-const EmployeeTable = ({ employees, onDelete, search }) => {
-  
-  const [presentEmployees, setPresentEmployees] = useState([]);
-
-  const handleCheckboxChange = (employeeId) => {
-    const updatedPresentEmployees = [...presentEmployees];
-    const index = updatedPresentEmployees.indexOf(employeeId);
-
-    if (index === -1) {
-      updatedPresentEmployees.push(employeeId);
-    } else {
-      updatedPresentEmployees.splice(index, 1);
-    }
-
-    setPresentEmployees(updatedPresentEmployees);
-  };
-
+const EmployeeTable = ({
+  employees,
+  onDelete,
+  search,
+  presentEmployees,
+  handleCheckboxChange,
+}) => {
   return (
     <div className="EmployeeTable">
       <table>
@@ -36,7 +25,7 @@ const EmployeeTable = ({ employees, onDelete, search }) => {
           {employees.map((employee) => {
             if (employee.name.includes(search)) {
               const isChecked = presentEmployees.includes(employee._id);
-                console.log(presentEmployees);
+
               return (
                 <tr key={employee._id}>
                   <td>{employee.name}</td>
@@ -46,7 +35,9 @@ const EmployeeTable = ({ employees, onDelete, search }) => {
                     <input
                       type="checkbox"
                       checked={isChecked}
-                      onChange={() => handleCheckboxChange(employee._id)}
+                      onChange={() =>
+                        handleCheckboxChange(employee._id, !isChecked)
+                      }
                     />
                   </td>
                   <td>

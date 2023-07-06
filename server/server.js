@@ -3,7 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const Equipment = require("./db/equipment")
-
 const { MONGO_URL, PORT = 8080 } = process.env;
 
 if (!MONGO_URL) {
@@ -13,7 +12,18 @@ if (!MONGO_URL) {
 
 const app = express();
 app.use(express.json());
-
+//////
+app.get("/api/missing", (req, res) => {
+  EmployeeModel.find({ present : false})
+    .then((missingEmployees) => {
+      res.json(missingEmployees);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
+});
+//////
 app.get("/api/employees/", async (req, res) => {
   const employees = await EmployeeModel.find().sort({ created: "desc" });
   return res.json(employees);
@@ -75,16 +85,8 @@ app.patch("/api/employees/:id", async (req, res, next) => {
   }
 });
 ////
-app.get("/missing", (req, res) => {
-  Employee.find({ present: false })
-    .then((missingEmployees) => {
-      res.json(missingEmployees);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    });
-});
+
+
 ////
 app.patch("/api/equipment/:id", async (req, res, next) => {
   try {

@@ -13,7 +13,7 @@ const deleteEmployee = (id) => {
   );
 };
 
-const EmployeeList = () => {
+const EmployeeList = ({ employeeList }) => {
   const { search } = useParams();
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
@@ -23,6 +23,35 @@ const EmployeeList = () => {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [presentEmployees, setPresentEmployees] = useState([]);
+
+  const handleCheckboxChange = (employeeId, isChecked) => {
+    const updatedPresentEmployees = [...presentEmployees];
+    const index = updatedPresentEmployees.indexOf(employeeId);
+
+    fetch(`/api/employees/${employeeId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ present: isChecked }),
+    })
+      .then((response) => response.json())
+      .then((updatedEmployee) => {
+        // Handle the updated employee data if needed
+      })
+      .catch((error) => {
+        console.error("Error updating employee:", error);
+      });
+
+    if (index === -1) {
+      updatedPresentEmployees.push(employeeId);
+    } else {
+      updatedPresentEmployees.splice(index, 1);
+    }
+
+    setPresentEmployees(updatedPresentEmployees);
+  };
 
   const handleDelete = (id) => {
     deleteEmployee(id);
@@ -37,12 +66,31 @@ const EmployeeList = () => {
   };
 
   useEffect(() => {
-    fetchEmployees().then((employees) => {
+    if (employeeList == null) {
+      fetchEmployees().then((employees) => {
+        setLoading(false);
+        setEmployees(employees);
+        setFilteredEmployees(employees);
+      });
+    } else {
       setLoading(false);
-      setEmployees(employees);
-      setFilteredEmployees(employees);
-    });
+      setEmployees(employeeList);
+      setFilteredEmployees(employeeList);
+    }
   }, []);
+
+ const getFullName = (employee) => {
+   const nameParts = employee.name.split(" ");
+   const firstName = nameParts[0];
+   const lastName = nameParts[nameParts.length - 1];
+   const middleName = nameParts.slice(1, nameParts.length - 1).join(" ");
+
+   return {
+     firstName,
+     middleName,
+     lastName,
+   };
+ };
 
   useEffect(() => {
     const filterEmployees = () => {
@@ -50,7 +98,7 @@ const EmployeeList = () => {
 
       if (searchQuery) {
         filtered = filtered.filter((employee) =>
-          getFullName(employee)
+          employee.name
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
         );
@@ -137,18 +185,7 @@ const EmployeeList = () => {
     setFilteredEmployees(sorted);
   };
 
-  const getFullName = (employee) => {
-    const nameParts = employee.name.split(" ");
-    const firstName = nameParts[0];
-    const lastName = nameParts[nameParts.length - 1];
-    const middleName = nameParts.slice(1, nameParts.length - 1).join(" ");
-
-    return {
-      firstName,
-      middleName,
-      lastName,
-    };
-  };
+ 
 
   useEffect(() => {
     sortEmployees();
@@ -203,12 +240,14 @@ const EmployeeList = () => {
         </select>
       </div>
       <EmployeeTable
-        search= {search ? search : ""}
+        search={search ? search : ""}
         employees={filteredEmployees}
         onDelete={handleDelete}
         onSort={handleSort}
         sortField={sortField}
         sortOrder={sortOrder}
+        presentEmployees={presentEmployees}
+        handleCheckboxChange={handleCheckboxChange}
       />
     </div>
   );

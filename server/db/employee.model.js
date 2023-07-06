@@ -7,9 +7,9 @@ const EmployeeSchema = new Schema({
   name: String,
   level: String,
   position: String,
-    present: {
-    type: Boolean,
-    default: false,
+  present: {
+  type: Boolean,
+  default: false,
   },
   created: {
     type: Date,

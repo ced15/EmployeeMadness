@@ -1,46 +1,30 @@
-import { useEffect, useState } from "react";
-import EmployeeTable from "../Components/EmployeeTable/EmployeeTable";
+import { useState, useEffect } from "react";
+// import EmployeeTable from "../Components/EmployeeTable";
+import EmployeeList from "./EmployeeList";
 
 const Missing = () => {
-  const [employees, setEmployees] = useState([]);
+  const [missingEmployees, setMissingEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/employees")
+    fetch("/api/missing")
       .then((response) => response.json())
       .then((data) => {
-        setEmployees(data);
+        setMissingEmployees(data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching employees:", error);
+        console.error("Error fetching missing employees:", error);
         setLoading(false);
       });
   }, []);
 
-  const handleCheckboxChange = (employeeId) => {
-    const updatedEmployees = employees.map((employee) => {
-      if (employee._id === employeeId) {
-        return {
-          ...employee,
-          present: !employee.present,
-        };
-      }
-      return employee;
-    });
-
-    setEmployees(updatedEmployees);
-  };
-
   return (
     <div className="Missing">
       {loading ? (
-        <div>Loading employees...</div>
+        <div>Loading missing employees...</div>
       ) : (
-        <EmployeeTable
-          employees={employees}
-          onCheckboxChange={handleCheckboxChange}
-        />
+        <EmployeeList employeeList={missingEmployees} />
       )}
     </div>
   );
