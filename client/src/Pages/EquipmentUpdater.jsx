@@ -5,7 +5,7 @@ import EquipmentForm from "../Components/EquipmentForm";
 import Loading from "../Components/Loading";
 
 const updateEquipment = (equipment) => {
-  return fetch(`/api/equipment/${equipment._id}`, {
+  return fetch(`/equipment/${equipment._id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -15,7 +15,7 @@ const updateEquipment = (equipment) => {
 };
 
 const fetchEquipment = (id) => {
-  return fetch(`/api/equipment/${id}`).then((res) => res.json());
+  return fetch(`/equipment/${id}`).then((res) => res.json());
 };
 
 const EquipmentUpdater = () => {

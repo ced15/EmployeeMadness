@@ -38,7 +38,6 @@ const EmployeeList = ({ employeeList }) => {
     })
       .then((response) => response.json())
       .then((updatedEmployee) => {
-        // Handle the updated employee data if needed
       })
       .catch((error) => {
         console.error("Error updating employee:", error);

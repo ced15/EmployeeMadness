@@ -1,20 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
   const [name, setName] = useState(employee?.name ?? "");
   const [level, setLevel] = useState(employee?.level ?? "");
   const [position, setPosition] = useState(employee?.position ?? "");
-  const [present, setPresent] = useState(employee?.present ?? false); 
+  const [equipments, setEquipments] = useState([]);
+  const [present, setPresent] = useState(employee?.present ?? false);
+  const [equipment, setEquip] = useState(employee?.equipment ?? {});
+
+
+  useEffect(() => {
+    fetch(`/api/equipment`)
+      .then((res) => res.json())
+      .then((equipment) => {
+        setEquipments(equipment)
+      console.log(equipment);});
+  },[]);
+
+
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     if (employee) {
+      console.log(employee);
       return onSave({
         ...employee,
         name,
         level,
         position,
+        equipment,
         present,
       });
     }
@@ -23,6 +38,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
       name,
       level,
       position,
+      equipment,
       present,
     });
   };
@@ -57,6 +73,27 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           name="position"
           id="position"
         />
+      </div>
+
+      <div className="control">
+        <label htmlFor="equipment">Equipment:</label>
+        <select
+          value={employee?.equipment}
+          name="equipment"
+          onChange={(e) => {
+            equipments.map((equip) => {
+              if (e.target.value === equip.name) {console.log(equip);
+                setEquip(equip._id)
+              } 
+            })
+            // setEquip(e.target.value)
+
+          }}
+        >
+          {equipments?.map((equip) => {
+            return <option> {equip.name} </option>;
+          })}
+        </select>
       </div>
 
       <div className="control">

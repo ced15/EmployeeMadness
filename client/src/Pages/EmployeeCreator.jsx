@@ -31,6 +31,7 @@ const EmployeeCreator = () => {
       onCancel={() => navigate("/")}
       disabled={loading}
       onSave={handleCreateEmployee}
+      // equipment ={}
     />
   );
 };

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./EmployeeTable.css";
+import { useState, useEffect } from "react";
 
 const EmployeeTable = ({
   employees,
@@ -8,15 +9,25 @@ const EmployeeTable = ({
   presentEmployees,
   handleCheckboxChange,
 }) => {
+  const [equipments, setEquip] = useState([]);
+  useEffect(() => {
+    fetch("/api/equipment")
+      .then((res) => res.json())
+      .then((data) => {
+        setEquip(data);
+      });
+  }, []);
+
   return (
     <div className="EmployeeTable">
       <table>
         <thead>
           <tr>
+            <th>Present</th>
             <th>Name</th>
             <th>Level</th>
             <th>Position</th>
-            <th>Present</th>
+            <th>Equipment</th>
             <th>Update</th>
             <th>Delete</th>
           </tr>
@@ -25,12 +36,14 @@ const EmployeeTable = ({
           {employees.map((employee) => {
             if (employee.name.includes(search)) {
               const isChecked = presentEmployees.includes(employee._id);
-
+              let equipmentName = ""
+              equipments.map((equip) => {
+                if (equip._id === employee.equipment) {
+                  equipmentName = equip.name
+                }
+              });
               return (
                 <tr key={employee._id}>
-                  <td>{employee.name}</td>
-                  <td>{employee.level}</td>
-                  <td>{employee.position}</td>
                   <td>
                     <input
                       type="checkbox"
@@ -40,6 +53,11 @@ const EmployeeTable = ({
                       }
                     />
                   </td>
+                  <td>{employee.name}</td>
+                  <td>{employee.level}</td>
+                  <td>{employee.position}</td>
+                  <td>{equipmentName}</td>
+
                   <td>
                     <Link to={`/update/${employee._id}`}>
                       <button type="button">Update</button>

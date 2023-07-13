@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
-const Equipment = require("./db/equipment")
+const Equipment = require("./db/equipment.model")
 const { MONGO_URL, PORT = 8080 } = process.env;
 
 if (!MONGO_URL) {
@@ -72,7 +72,7 @@ app.post("/api/equipment/", async (req, res, next) => {
 });
 ////
 
-app.patch("/api/employees/:id", async (req, res, next) => {
+app.patch("/api/employees/:id", async (req, res, next) => { console.log(req.body)
   try {
     const employee = await EmployeeModel.findOneAndUpdate(
       { _id: req.params.id },

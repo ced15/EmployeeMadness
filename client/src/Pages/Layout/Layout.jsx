@@ -12,7 +12,22 @@ const Layout = () => {
           <li className="grow">
             <Link to="/">Employees</Link>
           </li>
-          {isEquipmentPage ? (
+          <li>
+            <Link to="/equipment">
+              <button type="button">Equipment</button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/createequipment">
+              <button type="button">Create Equipment</button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/create">
+              <button type="button">Create Employee</button>
+            </Link>
+          </li>
+          {/* {isEquipmentPage ? (
             <li>
               <Link to="/createequipment">
                 <button type="button">Create Equipment</button>
@@ -24,7 +39,7 @@ const Layout = () => {
                 <button type="button">Create Employee</button>
               </Link>
             </li>
-          )}
+          )} */}
         </ul>
       </nav>
       <Outlet />
