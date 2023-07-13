@@ -11,6 +11,7 @@ const EmployeeSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref:"Equipment"
   },
+  brands: String,
   present: {
   type: Boolean,
   default: false,

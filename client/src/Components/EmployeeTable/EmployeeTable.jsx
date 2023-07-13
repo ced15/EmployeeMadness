@@ -28,6 +28,7 @@ const EmployeeTable = ({
             <th>Level</th>
             <th>Position</th>
             <th>Equipment</th>
+            <th>Favorite brand</th>
             <th>Update</th>
             <th>Delete</th>
           </tr>
@@ -36,10 +37,10 @@ const EmployeeTable = ({
           {employees.map((employee) => {
             if (employee.name.includes(search)) {
               const isChecked = presentEmployees.includes(employee._id);
-              let equipmentName = ""
+              let equipmentName = "";
               equipments.map((equip) => {
                 if (equip._id === employee.equipment) {
-                  equipmentName = equip.name
+                  equipmentName = equip.name;
                 }
               });
               return (
@@ -57,6 +58,7 @@ const EmployeeTable = ({
                   <td>{employee.level}</td>
                   <td>{employee.position}</td>
                   <td>{equipmentName}</td>
+                  <td>{employee.brands}</td>
 
                   <td>
                     <Link to={`/update/${employee._id}`}>
