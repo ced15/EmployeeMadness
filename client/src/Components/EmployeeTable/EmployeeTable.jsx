@@ -10,6 +10,8 @@ const EmployeeTable = ({
   handleCheckboxChange,
 }) => {
   const [equipments, setEquip] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc");
+
   useEffect(() => {
     fetch("/api/equipment")
       .then((res) => res.json())
@@ -18,13 +20,25 @@ const EmployeeTable = ({
       });
   }, []);
 
+  console.log(employees)
+const handleSort = () => {
+  if (sortOrder === "asc") {
+    employees.sort((a, b) => b.name.localeCompare(a.name));
+    setSortOrder("desc");
+  } else {
+    employees.sort((a, b) => a.name.localeCompare(b.name));
+    setSortOrder("asc");
+  }
+};
+
+
   return (
     <div className="EmployeeTable">
       <table>
         <thead>
           <tr>
             <th>Present</th>
-            <th>Name</th>
+            <th onClick={handleSort}>Name</th>
             <th>Level</th>
             <th>Position</th>
             <th>Equipment</th>
@@ -58,7 +72,7 @@ const EmployeeTable = ({
                   <td>{employee.level}</td>
                   <td>{employee.position}</td>
                   <td>{equipmentName}</td>
-                  <td>{employee.brands}</td>
+                  <td>{employee.brands.name}</td>
 
                   <td>
                     <Link to={`/update/${employee._id}`}>

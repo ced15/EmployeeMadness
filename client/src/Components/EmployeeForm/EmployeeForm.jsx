@@ -7,6 +7,10 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
   const [equipments, setEquipments] = useState([]);
   const [present, setPresent] = useState(employee?.present ?? false);
   const [equipment, setEquip] = useState(employee?.equipment ?? {});
+  const [brands, setBrand] = useState(employee?.brand ?? "");
+  const [allBrands, setAllBrands] = useState([]);
+
+
 
 
   useEffect(() => {
@@ -15,9 +19,18 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
       .then((equipment) => {
         setEquipments(equipment)
       console.log(equipment);});
-  },[]);
+  }, []);
+  
+    // useEffect(() => {
+    //   fetch(`/api/brands`)
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //       setAllBrands(data);
+    //       console.log(allBrands);
+    //     });
+    // }, []);
 
-
+// console.log(brands)
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -30,6 +43,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
         level,
         position,
         equipment,
+        // brands,
         present,
       });
     }
@@ -39,6 +53,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
       level,
       position,
       equipment,
+      // brands,
       present,
     });
   };
@@ -82,12 +97,12 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           name="equipment"
           onChange={(e) => {
             equipments.map((equip) => {
-              if (e.target.value === equip.name) {console.log(equip);
-                setEquip(equip._id)
-              } 
-            })
+              if (e.target.value === equip.name) {
+                console.log(equip);
+                setEquip(equip._id);
+              }
+            });
             // setEquip(e.target.value)
-
           }}
         >
           {equipments?.map((equip) => {
@@ -95,6 +110,34 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           })}
         </select>
       </div>
+
+      {/* <div className="control">
+        <label htmlFor="brand">Favourite Brands:</label>
+
+        <select
+          value={employee?.brands.name}
+          name="brand"
+          onChange={(e) => {
+            allBrands.map((brand) => {
+              if (e.target.value === brand.name) {
+                console.log(brand);
+                setBrand(brand._id);
+              }
+            });
+            // setEquip(e.target.value)
+          }}
+        >
+          {allBrands?.map((brand) => {
+            return <option> {brand.name} </option>;
+          })}
+        </select>
+        { <input
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+          name="brand"
+          id="brand"
+        /> }
+      </div> */}
 
       <div className="control">
         <label htmlFor="present">Present:</label>

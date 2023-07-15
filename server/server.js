@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const Equipment = require("./db/equipment.model")
+const Brands = require ("./db/brands.model")
 const { MONGO_URL, PORT = 8080 } = process.env;
 
 if (!MONGO_URL) {
@@ -25,11 +26,13 @@ app.get("/api/missing", (req, res) => {
 });
 //////
 app.get("/api/employees/", async (req, res) => {
-  const employees = await EmployeeModel.find().sort({ created: "desc" });
+  const employees = await EmployeeModel.find()
+  .populate("brands")
+  .sort({ created: "desc" });
   return res.json(employees);
 });
 
-//////
+/////
 app.get("/api/equipment/", async (req, res) => {
   const equipment = await Equipment.find().sort({ created: "desc" });
   return res.json(equipment);
@@ -37,7 +40,7 @@ app.get("/api/equipment/", async (req, res) => {
 //////
 
 app.get("/api/employees/:id", async (req, res) => {
-  const employee = await EmployeeModel.findById(req.params.id);
+  const employee = await EmployeeModel.findById(req.params.id).populate("brands");
   return res.json(employee);
 });
 
@@ -47,7 +50,11 @@ app.get("/api/equipment/:id", async (req, res) => {
   return res.json(equipment);
 });
 ////
-
+app.get("/api/brands/", async (req, res) => {
+  const brands = await Brands.find().sort({ created: "desc" });
+  return res.json(brands);
+});
+////
 app.post("/api/employees/", async (req, res, next) => {
   const employee = req.body;
 
