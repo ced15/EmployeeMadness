@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
-const Equipment = require("./db/equipment.model")
-const Brands = require ("./db/brands.model")
+const Equipment = require("./db/equipment.model");
+const Brands = require("./db/brands.model");
+const Colors = require("./db/colors.model");
 const { MONGO_URL, PORT = 8080 } = process.env;
 
 if (!MONGO_URL) {
@@ -15,7 +16,7 @@ const app = express();
 app.use(express.json());
 //////
 app.get("/api/missing", (req, res) => {
-  EmployeeModel.find({ present : false})
+  EmployeeModel.find({ present: false })
     .then((missingEmployees) => {
       res.json(missingEmployees);
     })
@@ -27,8 +28,9 @@ app.get("/api/missing", (req, res) => {
 //////
 app.get("/api/employees/", async (req, res) => {
   const employees = await EmployeeModel.find()
-  .populate("brands")
-  .sort({ created: "desc" });
+    .populate("brands")
+    .populate("colors")
+    .sort({ created: "desc" });
   return res.json(employees);
 });
 
@@ -40,7 +42,9 @@ app.get("/api/equipment/", async (req, res) => {
 //////
 
 app.get("/api/employees/:id", async (req, res) => {
-  const employee = await EmployeeModel.findById(req.params.id).populate("brands");
+  const employee = await EmployeeModel.findById(req.params.id)
+    .populate("brands")
+    .populate("colors");
   return res.json(employee);
 });
 
@@ -53,6 +57,12 @@ app.get("/api/equipment/:id", async (req, res) => {
 app.get("/api/brands/", async (req, res) => {
   const brands = await Brands.find().sort({ created: "desc" });
   return res.json(brands);
+});
+////
+
+app.get("/api/colors/", async (req, res) => {
+  const colors = await Colors.find().sort({ created: "desc" });
+  return res.json(colors);
 });
 ////
 app.post("/api/employees/", async (req, res, next) => {
@@ -79,7 +89,8 @@ app.post("/api/equipment/", async (req, res, next) => {
 });
 ////
 
-app.patch("/api/employees/:id", async (req, res, next) => { console.log(req.body)
+app.patch("/api/employees/:id", async (req, res, next) => {
+  console.log(req.body);
   try {
     const employee = await EmployeeModel.findOneAndUpdate(
       { _id: req.params.id },
@@ -92,7 +103,6 @@ app.patch("/api/employees/:id", async (req, res, next) => { console.log(req.body
   }
 });
 ////
-
 
 ////
 app.patch("/api/equipment/:id", async (req, res, next) => {

@@ -20,17 +20,17 @@ const EmployeeTable = ({
       });
   }, []);
 
-  console.log(employees)
-const handleSort = () => {
-  if (sortOrder === "asc") {
-    employees.sort((a, b) => b.name.localeCompare(a.name));
-    setSortOrder("desc");
-  } else {
-    employees.sort((a, b) => a.name.localeCompare(b.name));
-    setSortOrder("asc");
-  }
-};
-
+  console.log(employees);
+  
+  const handleSort = () => {
+    if (sortOrder === "asc") {
+      employees.sort((a, b) => b.name.localeCompare(a.name));
+      setSortOrder("desc");
+    } else {
+      employees.sort((a, b) => a.name.localeCompare(b.name));
+      setSortOrder("asc");
+    }
+  };
 
   return (
     <div className="EmployeeTable">
@@ -38,11 +38,12 @@ const handleSort = () => {
         <thead>
           <tr>
             <th>Present</th>
-            <th onClick={handleSort}>Name</th>
+            <button onClick={handleSort}>Name</button>
             <th>Level</th>
             <th>Position</th>
             <th>Equipment</th>
             <th>Favorite brand</th>
+            <th>Favorite colour</th>
             <th>Update</th>
             <th>Delete</th>
           </tr>
@@ -73,6 +74,7 @@ const handleSort = () => {
                   <td>{employee.position}</td>
                   <td>{equipmentName}</td>
                   <td>{employee.brands.name}</td>
+                  <td>{employee.colors.name}</td>
 
                   <td>
                     <Link to={`/update/${employee._id}`}>
