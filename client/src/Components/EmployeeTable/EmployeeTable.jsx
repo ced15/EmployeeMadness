@@ -20,7 +20,6 @@ const EmployeeTable = ({
       });
   }, []);
 
-  console.log(employees);
   
   const handleSort = () => {
     if (sortOrder === "asc") {
@@ -38,7 +37,7 @@ const EmployeeTable = ({
         <thead>
           <tr>
             <th>Present</th>
-            <button onClick={handleSort}>Name</button>
+            <th onClick={handleSort}>Name</th>
             <th>Level</th>
             <th>Position</th>
             <th>Equipment</th>

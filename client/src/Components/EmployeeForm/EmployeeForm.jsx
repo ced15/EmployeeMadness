@@ -25,7 +25,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
       .then((res) => res.json())
       .then((equipment) => {
         setEquipments(equipment)
-      console.log(equipment);});
+      ;});
   }, []);
   
     useEffect(() => {
