@@ -36,10 +36,11 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
          
         });
     }, []);
+console.log(employee);
+  
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     if (employee) {
       return onSave({
         ...employee,
@@ -119,7 +120,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           name="Brands"
           onChange={(e) => setBrand(e.target.value)}
         >
-          <option value="">Select </option>
+          <option value="">{employee.brands.name} </option>
           {allBrands.map((brand) => (
             <option key={brand._id} value={brand._id}>
               {brand.name}
@@ -135,7 +136,7 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
           name="Colors"
           onChange={(e) => setFavoriteColor(e.target.value)}
         >
-          <option value="">Select</option>
+          <option value="">{employee.colors.name}</option>
           {favoriteColors.map((color) => (
             <option key={color._id} value={color._id}>
               {color.name}

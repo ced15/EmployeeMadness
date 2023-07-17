@@ -37,7 +37,7 @@ const EmployeeTable = ({
         <thead>
           <tr>
             <th>Present</th>
-            <th onClick={handleSort}>Name</th>
+            <button onClick={handleSort}>Name</button>
             <th>Level</th>
             <th>Position</th>
             <th>Equipment</th>
