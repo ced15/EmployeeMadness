@@ -9,7 +9,9 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
   const [present, setPresent] = useState(employee?.present ?? false);
   const [brands, setBrand] = useState(employee?.brand ?? "");
   const [allBrands, setAllBrands] = useState([]);
-  const [favoriteColor, setFavoriteColor] = useState(employee?.favoriteColor ?? "");
+  const [favoriteColor, setFavoriteColor] = useState(
+    employee?.favoriteColor ?? ""
+  );
   const [favoriteColors, setFavoriteColors] = useState([]);
 
   useEffect(() => {
@@ -24,20 +26,18 @@ const EmployeeForm = ({ onSave, disabled, employee, onCancel }) => {
     fetch(`/api/equipment`)
       .then((res) => res.json())
       .then((equipment) => {
-        setEquipments(equipment)
-      ;});
+        setEquipments(equipment);
+      });
   }, []);
-  
-    useEffect(() => {
-      fetch(`/api/brands`)
-        .then((res) => res.json())
-        .then((data) => {
-          setAllBrands(data);
-         
-        });
-    }, []);
-console.log(employee);
-  
+
+  useEffect(() => {
+    fetch(`/api/brands`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllBrands(data);
+      });
+  }, []);
+  console.log(employee);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -120,7 +120,9 @@ console.log(employee);
           name="Brands"
           onChange={(e) => setBrand(e.target.value)}
         >
-          <option value="">{employee.brands.name} </option>
+          <option value="">
+            {employee ? employee.brands.name : "Select brand"}{" "}
+          </option>
           {allBrands.map((brand) => (
             <option key={brand._id} value={brand._id}>
               {brand.name}
@@ -136,7 +138,9 @@ console.log(employee);
           name="Colors"
           onChange={(e) => setFavoriteColor(e.target.value)}
         >
-          <option value="">{employee.colors.name}</option>
+          <option value="">
+            {employee ? employee.colors.name : "Select color"}
+          </option>
           {favoriteColors.map((color) => (
             <option key={color._id} value={color._id}>
               {color.name}
