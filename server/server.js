@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const EmployeeModel = require("./db/employee.model");
 const Equipment = require("./db/equipment.model");
 const Brands = require("./db/brands.model");
+const Types = require("./db/type.model")
 const Colors = require("./db/colors.model");
 const { MONGO_URL, PORT = 8080 } = process.env;
 
@@ -59,7 +60,11 @@ app.get("/api/brands/", async (req, res) => {
   return res.json(brands);
 });
 ////
-
+app.get("/api/types/", async (req, res) => {
+  const types = await Types.find().sort({ created: "desc" });
+  return res.json(types);
+});
+////
 app.get("/api/colors/", async (req, res) => {
   const colors = await Colors.find().sort({ created: "desc" });
   return res.json(colors);
@@ -99,7 +104,8 @@ app.patch("/api/employees/:id", async (req, res, next) => {
     return res.json(employee);
   } catch (err) {
     return next(err);
-  }
+  } 
+  
 });
 ////
 

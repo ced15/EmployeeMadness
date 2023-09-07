@@ -5,7 +5,10 @@ const { Schema } = mongoose;
 
 const EquipmentSchema = new Schema({
   name: String,
-  type: String,
+  type: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Type",
+  },
   amount: Number,
   created: {
     type: Date,

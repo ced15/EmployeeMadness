@@ -8,6 +8,8 @@ const levels = require("./levels.json");
 const positions = require("./positions.json");
 const brands = require("./brands.json");
 const colors = require("./colors.json");
+const type = require("./type.json")
+const TypeModel = require("../db/type.model")
 const EmployeeModel = require("../db/employee.model");
 const BrandsModel = require("../db/brands.model");
 const ColorsModel = require("../db/colors.model");
@@ -52,6 +54,17 @@ const populateBrands = async () => {
   console.log("Brands created");
 };
 
+const populateType = async () => {
+  await TypeModel.deleteMany({});
+
+  const types = type.map((name) => ({
+    name,
+  }));
+
+  await TypeModel.create(...types);
+  console.log("Types created");
+};
+
 const populateColors = async () => {
   await ColorsModel.deleteMany({});
 
@@ -65,6 +78,8 @@ const populateColors = async () => {
 
 const main = async () => {
   await mongoose.connect(mongoUrl);
+
+  await populateType();
 
   await populateBrands();
 

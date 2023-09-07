@@ -12,6 +12,7 @@ const createEquipment = (equipment) => {
   }).then((res) => res.json());
 };
 
+
 const EquipmentCreator = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,7 @@ const EquipmentCreator = () => {
 
   return (
     <EquipmentForm
+      
       onCancel={() => navigate("/equipment")}
       disabled={loading}
       onSave={handleCreateEquipment}

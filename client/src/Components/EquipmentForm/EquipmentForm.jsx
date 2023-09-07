@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EquipmentForm = ({ onSave, disabled, equipment, onCancel }) => {
   const [name, setName] = useState(equipment?.name ?? "");
+  const [types, setTypes] = useState([]);
   const [type, setType] = useState(equipment?.type ?? "");
   const [amount, setAmount] = useState(equipment?.amount ?? "");
+
+
+    useEffect(() => {
+      fetch(`/api/types`)
+        .then((res) => res.json())
+        .then((types) => {
+          setTypes(types);
+        });
+    }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -38,12 +48,18 @@ const EquipmentForm = ({ onSave, disabled, equipment, onCancel }) => {
 
       <div className="control">
         <label htmlFor="type">Type:</label>
-        <input
+        <select
           value={type}
-          onChange={(e) => setType(e.target.value)}
           name="type"
-          id="type"
-        />
+          onChange={(e) => setType(e.target.value)}
+        >
+          <option value="">Select</option>
+          {types.map((type) => (
+            <option key={type._id} value={type._id}>
+              {type.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="control">
