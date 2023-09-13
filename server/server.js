@@ -13,9 +13,11 @@ if (!MONGO_URL) {
   process.exit(1);
 }
 
+
 const app = express();
 app.use(express.json());
 //////
+
 app.get("/api/missing", (req, res) => {
   EmployeeModel.find({ present: false })
     .then((missingEmployees) => {
